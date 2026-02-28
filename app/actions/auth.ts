@@ -19,8 +19,17 @@ export async function login(formData: FormData) {
         return { error: error.message }
     }
 
+    let role = 'student'
+    const { data: { user } } = await supabase.auth.getUser()
+    if (user) {
+        const { data: profile } = await supabase.from('profiles').select('user_role').eq('id', user.id).single()
+        if (profile?.user_role) {
+            role = profile.user_role
+        }
+    }
+
     revalidatePath('/', 'layout')
-    redirect('/dashboard')
+    redirect(`/dashboard?type=${role}`)
 }
 
 export async function signup(formData: FormData) {

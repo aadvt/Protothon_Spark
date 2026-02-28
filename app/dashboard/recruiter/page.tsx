@@ -26,7 +26,7 @@ const mockCandidates = [
     id: '1',
     name: 'Aarav Patel',
     email: 'aarav.patel@college.edu',
-    gpa: 3.8,
+    gpa: 8.8,
     frontend: 82,
     backend: 78,
     dsa: 85,
@@ -38,7 +38,7 @@ const mockCandidates = [
     id: '2',
     name: 'Priya Sharma',
     email: 'priya.sharma@college.edu',
-    gpa: 3.9,
+    gpa: 9.1,
     frontend: 88,
     backend: 82,
     dsa: 87,
@@ -50,7 +50,7 @@ const mockCandidates = [
     id: '3',
     name: 'Rohan Gupta',
     email: 'rohan.gupta@college.edu',
-    gpa: 3.6,
+    gpa: 7.6,
     frontend: 75,
     backend: 85,
     dsa: 82,
@@ -62,7 +62,7 @@ const mockCandidates = [
     id: '4',
     name: 'Sneha Singh',
     email: 'sneha.singh@college.edu',
-    gpa: 3.7,
+    gpa: 8.2,
     frontend: 85,
     backend: 80,
     dsa: 88,
@@ -74,7 +74,7 @@ const mockCandidates = [
     id: '5',
     name: 'Vikram Iyer',
     email: 'vikram.iyer@college.edu',
-    gpa: 3.5,
+    gpa: 7.2,
     frontend: 72,
     backend: 78,
     dsa: 80,
@@ -89,7 +89,7 @@ const jobRequirements = {
   frontend: 75,
   backend: 70,
   dsa: 75,
-  min_cgpa: 3.8,
+  min_cgpa: 8.0,
 }
 
 interface InterviewSchedule {
@@ -105,10 +105,36 @@ export default function RecruiterDashboard() {
   const [interviews, setInterviews] = useState<InterviewSchedule[]>([])
   const [selectedCandidate, setSelectedCandidate] = useState<string | null>(null)
   const [overrides, setOverrides] = useState<Record<string, boolean>>({})
+  const [candidates, setCandidates] = useState(mockCandidates)
 
   useEffect(() => {
     const saved = localStorage.getItem('student_overrides')
     if (saved) setOverrides(JSON.parse(saved))
+
+    const fetchCandidates = async () => {
+      const { createClient } = await import('@/lib/supabase/client')
+      const supabase = createClient()
+
+      const { data: academicsData } = await supabase.from('academics').select('*, profiles(full_name, email)')
+
+      if (academicsData && academicsData.length > 0) {
+        const realCandidates = academicsData.map((record: any) => ({
+          id: record.student_id,
+          name: record.profiles?.full_name || 'Unknown Student',
+          email: record.profiles?.email || '',
+          gpa: record.gpa || 0,
+          frontend: record.frontend_skill || 0,
+          backend: record.backend_skill || 0,
+          dsa: record.dsa_skill || 0,
+          experience: 0,
+          verified: record.verification_status === 'verified',
+          manualOverride: false
+        }))
+        // Prepend real candidates to mock ones to show both for demo
+        setCandidates([...realCandidates, ...mockCandidates])
+      }
+    }
+    fetchCandidates()
   }, [])
 
   const calculateFitScore = (candidate: typeof mockCandidates[0]) => {
@@ -117,12 +143,12 @@ export default function RecruiterDashboard() {
     const avgRequired =
       (jobRequirements.frontend + jobRequirements.backend + jobRequirements.dsa) / 3
     const skillMatch = Math.max(0, Math.min(100, avgSkill - (avgRequired - 80)))
-    const gpaBonus = (candidate.gpa / 4) * 20
+    const gpaBonus = (candidate.gpa / 10) * 20
     const verificationBonus = candidate.verified ? 10 : 0
     return Math.round(skillMatch + gpaBonus + verificationBonus)
   }
 
-  const filteredCandidates = mockCandidates
+  const filteredCandidates = candidates
     .map(c => ({ ...c, manualOverride: overrides[c.id] ?? c.manualOverride }))
     .filter((c) => {
       const meetsCgpaPolicy = Number(c.gpa.toFixed(2)) >= Number(jobRequirements.min_cgpa.toFixed(2)) || c.manualOverride
@@ -141,8 +167,9 @@ export default function RecruiterDashboard() {
       return a.name.localeCompare(b.name)
     })
 
+
   const handleScheduleInterview = async (candidateId: string, candidateName: string, date: string, time: string, notes: string) => {
-    const candidateEmail = mockCandidates.find(c => c.id === candidateId)?.email || 'student@college.edu'
+    const candidateEmail = candidates.find(c => c.id === candidateId)?.email || 'student@college.edu'
     const result = await scheduleInterviewAction(candidateName, candidateEmail, date, time, notes)
 
     if (result.success) {

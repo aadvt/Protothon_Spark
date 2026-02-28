@@ -8,7 +8,7 @@ import AdminDashboard from './admin/page'
 
 export default function DashboardRouter() {
   const searchParams = useSearchParams()
-  const role = searchParams.get('role') || 'student'
+  const role = searchParams.get('type') || searchParams.get('role') || 'student'
 
   return (
     <Suspense fallback={<div>Loading...</div>}>

@@ -70,7 +70,7 @@ export default function AdminDashboard() {
     totalStudents: 145,
     verifiedStudents: 138,
     placedStudents: 92,
-    avgGPA: 3.72,
+    avgGPA: 8.41,
     avgSkillScore: 78,
   })
 
