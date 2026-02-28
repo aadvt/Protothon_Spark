@@ -5,13 +5,15 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Search, MapPin, Briefcase, GraduationCap } from 'lucide-react'
 import { useState } from 'react'
+import { toast } from 'sonner'
+import { Toaster } from '@/components/ui/sonner'
 
 const mockCandidates = [
     {
         id: '1',
         name: 'Aarav Patel',
         email: 'aarav.patel@college.edu',
-        gpa: 3.8,
+        gpa: 8.8,
         graduation: 2024,
         skills: ['React', 'Node.js', 'Python'],
         location: 'Bangalore, India',
@@ -21,7 +23,7 @@ const mockCandidates = [
         id: '2',
         name: 'Priya Sharma',
         email: 'priya.sharma@college.edu',
-        gpa: 3.9,
+        gpa: 9.1,
         graduation: 2024,
         skills: ['Figma', 'System Design', 'React'],
         location: 'Mumbai, India',
@@ -31,7 +33,7 @@ const mockCandidates = [
         id: '3',
         name: 'Rohan Gupta',
         email: 'rohan.gupta@college.edu',
-        gpa: 3.6,
+        gpa: 7.6,
         graduation: 2024,
         skills: ['Java', 'Spring Boot', 'AWS'],
         location: 'Pune, India',
@@ -41,7 +43,7 @@ const mockCandidates = [
         id: '4',
         name: 'Sneha Singh',
         email: 'sneha.singh@college.edu',
-        gpa: 3.7,
+        gpa: 8.2,
         graduation: 2024,
         skills: ['C++', 'DSA', 'SQL'],
         location: 'Delhi, India',
@@ -125,8 +127,8 @@ export default function CandidatesPage() {
                                     </div>
 
                                     <div className="mt-auto pt-4 flex gap-2">
-                                        <Button variant="outline" className="flex-1">View Profile</Button>
-                                        <Button className="flex-1">Contact</Button>
+                                        <Button variant="outline" className="flex-1" onClick={() => toast.success(`Viewing full profile payload for ${candidate.name}...`)}>View Profile</Button>
+                                        <Button className="flex-1" onClick={() => window.location.href = `mailto:${candidate.email}`}>Contact</Button>
                                     </div>
                                 </div>
                             </div>
@@ -138,6 +140,7 @@ export default function CandidatesPage() {
                         </div>
                     )}
                 </div>
+                <Toaster />
             </main>
         </>
     )

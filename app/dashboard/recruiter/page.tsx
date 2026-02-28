@@ -102,6 +102,7 @@ interface InterviewSchedule {
 export default function RecruiterDashboard() {
   const [searchQuery, setSearchQuery] = useState('')
   const [sortBy, setSortBy] = useState('fit-score')
+  const [viewFilter, setViewFilter] = useState('all')
   const [interviews, setInterviews] = useState<InterviewSchedule[]>([])
   const [selectedCandidate, setSelectedCandidate] = useState<string | null>(null)
   const [overrides, setOverrides] = useState<Record<string, boolean>>({})
@@ -167,6 +168,12 @@ export default function RecruiterDashboard() {
       return a.name.localeCompare(b.name)
     })
 
+  const visibleCandidates = filteredCandidates.filter(c => {
+    if (viewFilter === 'scheduled') {
+      return interviews.some(i => i.candidateId === c.id)
+    }
+    return true
+  })
 
   const handleScheduleInterview = async (candidateId: string, candidateName: string, date: string, time: string, notes: string) => {
     const candidateEmail = candidates.find(c => c.id === candidateId)?.email || 'student@college.edu'
@@ -248,17 +255,29 @@ export default function RecruiterDashboard() {
                   className="pl-10 h-11 bg-background/50 border-border"
                 />
               </div>
-              <div className="relative">
-                <Filter className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                <select
-                  value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value)}
-                  className="h-11 pl-10 pr-4 rounded-md border border-border bg-background/50 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 appearance-none"
-                >
-                  <option value="fit-score">Sort by Fit Score</option>
-                  <option value="gpa">Sort by GPA</option>
-                  <option value="name">Sort by Name</option>
-                </select>
+              <div className="flex gap-2">
+                <div className="relative">
+                  <Filter className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                  <select
+                    value={sortBy}
+                    onChange={(e) => setSortBy(e.target.value)}
+                    className="h-11 pl-10 pr-4 rounded-md border border-border bg-background/50 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 appearance-none"
+                  >
+                    <option value="fit-score">Sort by Fit Score</option>
+                    <option value="gpa">Sort by GPA</option>
+                    <option value="name">Sort by Name</option>
+                  </select>
+                </div>
+                <div className="relative">
+                  <select
+                    value={viewFilter}
+                    onChange={(e) => setViewFilter(e.target.value)}
+                    className="h-11 pl-4 pr-4 rounded-md border border-border bg-background/50 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 appearance-none"
+                  >
+                    <option value="all">All Candidates</option>
+                    <option value="scheduled">Scheduled Only</option>
+                  </select>
+                </div>
               </div>
             </div>
           </div>
@@ -276,7 +295,7 @@ export default function RecruiterDashboard() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-border/50">
-                {filteredCandidates.map((candidate) => {
+                {visibleCandidates.map((candidate) => {
                   const fitScore = calculateFitScore(candidate)
                   const hasInterview = interviews.some((i) => i.candidateId === candidate.id)
                   const fitScoreBg =
@@ -412,7 +431,7 @@ export default function RecruiterDashboard() {
               </tbody>
             </table>
 
-            {filteredCandidates.length === 0 && (
+            {visibleCandidates.length === 0 && (
               <div className="text-center py-16">
                 <Search className="h-12 w-12 text-muted-foreground/30 mx-auto mb-4" />
                 <p className="text-lg font-medium">No candidates found</p>
