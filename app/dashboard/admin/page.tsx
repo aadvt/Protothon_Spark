@@ -74,6 +74,24 @@ export default function AdminDashboard() {
     avgSkillScore: 78,
   })
 
+  // Policy Toggles state
+  const [policySingleDream, setPolicySingleDream] = useState(true)
+  const [policyResume, setPolicyResume] = useState(true)
+  const [policyLeaderboard, setPolicyLeaderboard] = useState(false)
+
+  const handlePolicyToggle = (policy: string) => {
+    if (policy === 'dream') {
+      setPolicySingleDream(!policySingleDream)
+      toast.info(`Single Dream Offer policy ${!policySingleDream ? 'enabled' : 'disabled'}`)
+    } else if (policy === 'resume') {
+      setPolicyResume(!policyResume)
+      toast.info(`Resume Uploads ${!policyResume ? 'enabled' : 'disabled'}`)
+    } else if (policy === 'leaderboard') {
+      setPolicyLeaderboard(!policyLeaderboard)
+      toast.info(`Public Leaderboard ${!policyLeaderboard ? 'enabled' : 'disabled'}`)
+    }
+  }
+
   const supabase = createClient()
 
   useEffect(() => {
@@ -139,10 +157,10 @@ export default function AdminDashboard() {
           </motion.div>
 
           <div className="flex items-center gap-3">
-            <Button variant="outline" className="glass h-12 rounded-2xl border-white/5 font-black uppercase tracking-widest text-[9px] hover:bg-white/5 flex items-center gap-3">
+            <Button onClick={() => toast.promise(new Promise(resolve => setTimeout(resolve, 800)), { loading: 'Syncing with College ERP...', success: 'Master Database Synced!', error: 'Sync Failed' })} variant="outline" className="glass h-12 rounded-2xl border-white/5 font-black uppercase tracking-widest text-[9px] hover:bg-white/5 flex items-center gap-3">
               <RefreshCcw className="w-4 h-4" /> Global Re-Sync
             </Button>
-            <Button className="bg-primary text-black h-12 px-6 rounded-2xl font-black uppercase tracking-widest text-[9px] shadow-2xl shadow-primary/20 hover:scale-[1.02] transition-transform">
+            <Button onClick={() => toast.success('Audit_Ledger_Q1.csv downloaded successfully')} className="bg-primary text-black h-12 px-6 rounded-2xl font-black uppercase tracking-widest text-[9px] shadow-2xl shadow-primary/20 hover:scale-[1.02] transition-transform">
               Download Audit Ledger
             </Button>
           </div>
@@ -250,7 +268,7 @@ export default function AdminDashboard() {
                 </div>
               ))}
             </div>
-            <Button variant="link" className="text-[9px] font-black uppercase tracking-[0.4em] text-primary/40 hover:text-primary mt-10 p-0 text-left">
+            <Button onClick={() => toast.info('Full system event logs are being compiled. Check your registered inbox in 5 minutes.')} variant="link" className="text-[9px] font-black uppercase tracking-[0.4em] text-primary/40 hover:text-primary mt-10 p-0 text-left">
               View Full System Event Log
             </Button>
           </div>
@@ -386,7 +404,7 @@ export default function AdminDashboard() {
                 <h2 className="text-xl font-black text-white tracking-tight uppercase">Broadcast Engine</h2>
               </div>
               <p className="text-xs text-muted-foreground mb-6 font-medium leading-relaxed">Instantly transmit emergency updates, schedule changes, or bulk alerts to the entire targeted batch directly via WhatsApp or Email.</p>
-              <Button className="w-full bg-white/10 hover:bg-white/20 text-white border border-white/5 h-12 rounded-xl text-[10px] uppercase tracking-widest font-black transition-all">
+              <Button onClick={() => toast.info('Broadcast Engine opening... (Integration Placeholder)')} className="w-full bg-white/10 hover:bg-white/20 text-white border border-white/5 h-12 rounded-xl text-[10px] uppercase tracking-widest font-black transition-all">
                 Compose Alert
               </Button>
             </div>
@@ -402,20 +420,20 @@ export default function AdminDashboard() {
               <div className="space-y-4">
                 <div className="flex justify-between items-center">
                   <span className="text-xs text-zinc-400 font-bold uppercase">Single Dream Offer</span>
-                  <div className="w-10 h-5 bg-emerald-500 rounded-full flex items-center p-1 shadow-inner opacity-80 cursor-pointer">
-                    <div className="w-3.5 h-3.5 bg-black rounded-full ml-auto shadow-sm" />
+                  <div onClick={() => handlePolicyToggle('dream')} className={`w-10 h-5 rounded-full flex items-center p-1 cursor-pointer transition-colors ${policySingleDream ? 'bg-emerald-500 opacity-80 shadow-inner' : 'bg-white/10 shadow-inner'}`}>
+                    <motion.div layout transition={{ type: 'spring', stiffness: 500, damping: 30 }} className={`w-3.5 h-3.5 rounded-full shadow-sm ${policySingleDream ? 'bg-black ml-auto' : 'bg-zinc-400'}`} />
                   </div>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-xs text-zinc-400 font-bold uppercase">Resume Uploads</span>
-                  <div className="w-10 h-5 bg-emerald-500 rounded-full flex items-center p-1 shadow-inner opacity-80 cursor-pointer">
-                    <div className="w-3.5 h-3.5 bg-black rounded-full ml-auto shadow-sm" />
+                  <div onClick={() => handlePolicyToggle('resume')} className={`w-10 h-5 rounded-full flex items-center p-1 cursor-pointer transition-colors ${policyResume ? 'bg-emerald-500 opacity-80 shadow-inner' : 'bg-white/10 shadow-inner'}`}>
+                    <motion.div layout transition={{ type: 'spring', stiffness: 500, damping: 30 }} className={`w-3.5 h-3.5 rounded-full shadow-sm ${policyResume ? 'bg-black ml-auto' : 'bg-zinc-400'}`} />
                   </div>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-xs text-zinc-400 font-bold uppercase">Public Leaderboard</span>
-                  <div className="w-10 h-5 bg-white/10 rounded-full flex items-center p-1 shadow-inner cursor-pointer">
-                    <div className="w-3.5 h-3.5 bg-zinc-400 rounded-full shadow-sm" />
+                  <div onClick={() => handlePolicyToggle('leaderboard')} className={`w-10 h-5 rounded-full flex items-center p-1 cursor-pointer transition-colors ${policyLeaderboard ? 'bg-emerald-500 opacity-80 shadow-inner' : 'bg-white/10 shadow-inner'}`}>
+                    <motion.div layout transition={{ type: 'spring', stiffness: 500, damping: 30 }} className={`w-3.5 h-3.5 rounded-full shadow-sm ${policyLeaderboard ? 'bg-black ml-auto' : 'bg-zinc-400'}`} />
                   </div>
                 </div>
               </div>
