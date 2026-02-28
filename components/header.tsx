@@ -43,7 +43,7 @@ export function Header({ userRole, userName }: HeaderProps) {
               <Briefcase className="h-5 w-5" />
             </div>
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-foreground to-foreground/70">
-              PlacementHub
+              Spark
             </span>
           </Link>
 

@@ -90,7 +90,7 @@ export default function LoginPage() {
                         <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary shadow-lg shadow-primary/20 text-primary-foreground">
                             <Briefcase className="h-6 w-6" />
                         </div>
-                        <h1 className="text-4xl font-black tracking-tight">PlacementHub</h1>
+                        <h1 className="text-4xl font-black tracking-tight">Spark</h1>
                     </div>
 
                     <div className="relative mt-8">

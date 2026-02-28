@@ -29,7 +29,7 @@ export default function Home() {
           </h1>
 
           <p className="mb-12 text-xl md:text-2xl text-muted-foreground text-balance max-w-3xl mx-auto leading-relaxed fade-in-up delay-300">
-            Move beyond self-proclaimed skills. PlacementHub connects verified students with top recruiters using AI-driven code analysis and strict governance policies.
+            Move beyond self-proclaimed skills. Spark connects verified students with top recruiters using AI-driven code analysis and strict governance policies.
           </p>
 
           <div className="flex flex-col items-center justify-center gap-5 sm:flex-row fade-in-up delay-400">

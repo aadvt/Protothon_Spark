@@ -8,7 +8,7 @@ const outfit = Outfit({ subsets: ["latin"], variable: '--font-outfit' });
 const inter = Inter({ subsets: ["latin"], variable: '--font-inter' });
 
 export const metadata: Metadata = {
-  title: 'PlacementHub - College Placement SaaS',
+  title: 'Spark - College Placement SaaS',
   description: 'Modern college placement management system for students, recruiters, and placement cells',
   generator: 'v0.app',
   icons: {
