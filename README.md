@@ -7,6 +7,7 @@
 
 **Spark** is an elite, modern college placement platform designed to bridge the gap between verified student talent and premier recruiters. Moving beyond traditional, static, and self-proclaimed PDF resumes, Spark utilizes AI-driven skill verification and enforces strict placement cell governance.
 
+Try now 👉 https://protothon-spark.vercel.app/
 ---
 
 ## 🚀 The Three Pillars of Spark
