@@ -16,7 +16,7 @@ import {
   Search, TrendingUp, Users, CheckCircle, AlertCircle,
   ShieldAlert, ShieldCheck, Activity, Brain, Target,
   ArrowUpRight, Bell, Calendar, Loader2, Filter,
-  Database, RefreshCcw
+  Database, RefreshCcw, Briefcase, Settings
 } from 'lucide-react'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Cell } from 'recharts'
 import { toast } from 'sonner'
@@ -351,6 +351,78 @@ export default function AdminDashboard() {
             </div>
           </div>
         </div>
+
+        {/* 5. Additional Dash Controls */}
+        <div className="grid gap-6 md:grid-cols-3 mb-8 mt-12 items-stretch">
+          {/* Company Pipeline */}
+          <div className="bento-card border-none bg-zinc-900/40 backdrop-blur-md p-8 flex flex-col justify-between">
+            <div>
+              <div className="flex items-center gap-3 mb-4">
+                <Briefcase className="w-5 h-5 text-indigo-400" />
+                <h2 className="text-xl font-black text-white tracking-tight uppercase">Company Pipeline</h2>
+              </div>
+              <div className="space-y-4">
+                <div className="flex justify-between items-center bg-white/5 p-3 rounded-xl border border-white/5">
+                  <span className="text-[10px] uppercase tracking-widest text-muted-foreground font-bold">Upcoming</span>
+                  <span className="text-lg font-black text-white">4 Drives</span>
+                </div>
+                <div className="flex justify-between items-center bg-white/5 p-3 rounded-xl border border-white/5">
+                  <span className="text-[10px] uppercase tracking-widest text-muted-foreground font-bold">Ongoing</span>
+                  <span className="text-lg font-black text-emerald-400">2 Active</span>
+                </div>
+                <div className="flex justify-between items-center bg-white/5 p-3 rounded-xl border border-white/5">
+                  <span className="text-[10px] uppercase tracking-widest text-muted-foreground font-bold">Completed</span>
+                  <span className="text-lg font-black text-white">12 Drives</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Broadcast Engine */}
+          <div className="bento-card border-none bg-zinc-900/40 backdrop-blur-md p-8 flex flex-col justify-between">
+            <div>
+              <div className="flex items-center gap-3 mb-4">
+                <Bell className="w-5 h-5 text-amber-400" />
+                <h2 className="text-xl font-black text-white tracking-tight uppercase">Broadcast Engine</h2>
+              </div>
+              <p className="text-xs text-muted-foreground mb-6 font-medium leading-relaxed">Instantly transmit emergency updates, schedule changes, or bulk alerts to the entire targeted batch directly via WhatsApp or Email.</p>
+              <Button className="w-full bg-white/10 hover:bg-white/20 text-white border border-white/5 h-12 rounded-xl text-[10px] uppercase tracking-widest font-black transition-all">
+                Compose Alert
+              </Button>
+            </div>
+          </div>
+
+          {/* Policy Manager */}
+          <div className="bento-card border-none bg-zinc-900/40 backdrop-blur-md p-8 flex flex-col justify-between">
+            <div>
+              <div className="flex items-center gap-3 mb-4">
+                <Settings className="w-5 h-5 text-purple-400" />
+                <h2 className="text-xl font-black text-white tracking-tight uppercase">Policy Manager</h2>
+              </div>
+              <div className="space-y-4">
+                <div className="flex justify-between items-center">
+                  <span className="text-xs text-zinc-400 font-bold uppercase">Single Dream Offer</span>
+                  <div className="w-10 h-5 bg-emerald-500 rounded-full flex items-center p-1 shadow-inner opacity-80 cursor-pointer">
+                    <div className="w-3.5 h-3.5 bg-black rounded-full ml-auto shadow-sm" />
+                  </div>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-xs text-zinc-400 font-bold uppercase">Resume Uploads</span>
+                  <div className="w-10 h-5 bg-emerald-500 rounded-full flex items-center p-1 shadow-inner opacity-80 cursor-pointer">
+                    <div className="w-3.5 h-3.5 bg-black rounded-full ml-auto shadow-sm" />
+                  </div>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-xs text-zinc-400 font-bold uppercase">Public Leaderboard</span>
+                  <div className="w-10 h-5 bg-white/10 rounded-full flex items-center p-1 shadow-inner cursor-pointer">
+                    <div className="w-3.5 h-3.5 bg-zinc-400 rounded-full shadow-sm" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <Toaster />
       </main>
     </div>
